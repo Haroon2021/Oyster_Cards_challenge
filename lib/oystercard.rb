@@ -6,6 +6,7 @@ class Oystercard
     @balance = 0
     @limit = 90
     @in_journey = false
+    @min_balance = 1
   end
 
   def top_up(amount)
@@ -20,6 +21,7 @@ class Oystercard
   end
 
   def touchin
+    raise "can not touch in balance below min #{@min_balance}" if @balance < @min_balance
     @in_journey = true
   end
   

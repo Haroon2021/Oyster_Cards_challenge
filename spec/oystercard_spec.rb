@@ -35,9 +35,19 @@ describe Oystercard do
       
       #Testing if we create a oystercard then we touch in and it says that the card is on a journey
       it "should update in_journey to true after touching in" do
+        subject.top_up(1)
         subject.touchin
         expect(subject.in_journey?).to eq true
       end
+      
+      # it "should stop top_up if we add something that breaks the limit" do
+      it "should not touch in if the balance is below the min balance" do
+        expect {subject.touchin}.to raise_error("can not touch in balance below min balance")
+      end
+
+      #   expect { subject.top_up(100) }.to raise_error("this has exceeded the top up limit value of 90")
+      # end
+
   end
 
   #Testing the touchout method
@@ -46,6 +56,7 @@ describe Oystercard do
 
       #Testing if we create a oystercard then we touch out and it says that the card is on a journey
       it "should update in_journey to true after touching out" do
+        subject.top_up(1)
         subject.touchin
         subject.touchout
         expect(subject.in_journey?).to eq false
