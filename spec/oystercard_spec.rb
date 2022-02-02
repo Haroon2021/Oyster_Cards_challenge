@@ -27,4 +27,37 @@ describe Oystercard do
       expect { subject.deduct(20) }.to change { subject.balance }.by(-20)
     end
   end
+
+  #Testing the touch in method
+  describe "#touchin" do
+      #Testing if the function exists
+      it {is_expected.to respond_to(:touchin).with(0).argument}
+      
+      #Testing if we create a oystercard then we touch in and it says that the card is on a journey
+      it "should update in_journey to true after touching in" do
+        subject.touchin
+        expect(subject.in_journey?).to eq true
+      end
+  end
+
+  #Testing the touchout method
+  describe "#touchout" do
+      it {is_expected.to respond_to(:touchout).with(0).argument}
+
+      #Testing if we create a oystercard then we touch out and it says that the card is on a journey
+      it "should update in_journey to true after touching out" do
+        subject.touchin
+        subject.touchout
+        expect(subject.in_journey?).to eq false
+      end
+  end
+
+  
+  #Testing the in_journey? method
+  describe "#in_journey?" do
+    it "should return false" do
+      expect(subject.in_journey?).to eq false
+    end
+  end
+
 end
