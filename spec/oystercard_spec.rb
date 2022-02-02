@@ -20,15 +20,9 @@ describe Oystercard do
     end
   end
 
-  # Testing the deduct method
-  describe "#deduct" do
-    it "should deduct money from balance of the card" do
-      subject.top_up(50)
-      expect { subject.deduct(20) }.to change { subject.balance }.by(-20)
-    end
-  end
 
-  #Testing the touch in method
+
+  #Testing the touchin method
   describe "#touchin" do
       #Testing if the function exists
       it {is_expected.to respond_to(:touchin).with(0).argument}
@@ -45,9 +39,6 @@ describe Oystercard do
         expect {subject.touchin}.to raise_error("can not touch in balance below min balance")
       end
 
-      #   expect { subject.top_up(100) }.to raise_error("this has exceeded the top up limit value of 90")
-      # end
-
   end
 
   #Testing the touchout method
@@ -60,6 +51,14 @@ describe Oystercard do
         subject.touchin
         subject.touchout
         expect(subject.in_journey?).to eq false
+      end
+      #Testing if fare is deducted
+      it "should have an oyster card that touches out and reduces the balance by the min balance which is assumed to be the fare" do
+        subject.top_up(78)
+        subject.touchin
+        expect {subject.touchout}.to change {subject.balance}.by(-1)
+        # expect {}.to change{}.by()
+        # expect { subject.deduct(20) }.to change { subject.balance }.by(-20)
       end
   end
 

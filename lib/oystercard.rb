@@ -15,18 +15,17 @@ class Oystercard
     @balance
   end
 
-  def deduct(amount)
-    @balance -= amount
-    @balance
-  end
+
 
   def touchin
-    raise "can not touch in balance below min #{@min_balance}" if @balance < @min_balance
+    raise "can not touch in balance below min balance" if @balance < @min_balance
     @in_journey = true
   end
   
   def touchout
     @in_journey = false
+    deduct(1)
+    @balance
   end
 
   def in_journey?
@@ -38,4 +37,10 @@ class Oystercard
   def over_limit?(balance,amount)
     @balance + amount > @limit
   end
+
+  def deduct(amount)
+    @balance -= amount
+    @balance
+  end
+
 end
