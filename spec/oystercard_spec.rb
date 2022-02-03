@@ -31,7 +31,7 @@ describe Oystercard do
       it "should update in_journey to true after touching in" do
         subject.top_up(1)
         subject.touchin(station)
-        expect(subject.in_journey?).to eq true
+        expect(subject.start_station).to eq true
       end
       
       # it "should stop top_up if we add something that breaks the limit" do
@@ -85,7 +85,8 @@ describe Oystercard do
   #Testing the in_journey? method
   describe "#in_journey?" do
     it "should return false" do
-      expect(subject.in_journey?).to eq false
+    subject.touchout
+      expect(subject.start_station).to eq nil 
     end
   end
 
