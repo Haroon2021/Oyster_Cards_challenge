@@ -1,7 +1,7 @@
 require_relative "../lib/oystercard.rb"
 
 describe Oystercard do
-    
+  
   # tests if an oyster card responds to balance
   describe '#balance' do
     it 'should respond to balance' do
@@ -25,19 +25,30 @@ describe Oystercard do
   #Testing the touchin method
   describe "#touchin" do
       #Testing if the function exists
-      it {is_expected.to respond_to(:touchin).with(0).argument}
+      it {is_expected.to respond_to(:touchin).with(1).argument}
       
       #Testing if we create a oystercard then we touch in and it says that the card is on a journey
       it "should update in_journey to true after touching in" do
         subject.top_up(1)
-        subject.touchin
+        subject.touchin(station)
         expect(subject.in_journey?).to eq true
       end
       
       # it "should stop top_up if we add something that breaks the limit" do
       it "should not touch in if the balance is below the min balance" do
-        expect {subject.touchin}.to raise_error("can not touch in balance below min balance")
+        min = Oystercard::MIN_BALANCE
+        expect {subject.touchin(station)}.to raise_error("can not touch in balance below #{min}")
       end
+      
+      #it should make the card remember the entry station
+      let(:station) {double :station}
+      it "it should make the card remember the entry station" do
+        subject.top_up(5)
+        subject.touchin(station)
+        expect(subject.start_station).to eq station
+      end 
+
+
 
   end
 
@@ -48,21 +59,29 @@ describe Oystercard do
       #Testing if we create a oystercard then we touch out and it says that the card is on a journey
       it "should update in_journey to true after touching out" do
         subject.top_up(1)
-        subject.touchin
+        subject.touchin(station)
         subject.touchout
         expect(subject.in_journey?).to eq false
       end
       #Testing if fare is deducted
+      let(:station) {double :station}
       it "should have an oyster card that touches out and reduces the balance by the min balance which is assumed to be the fare" do
         subject.top_up(78)
-        subject.touchin
+        subject.touchin(station)
         expect {subject.touchout}.to change {subject.balance}.by(-1)
-        # expect {}.to change{}.by()
-        # expect { subject.deduct(20) }.to change { subject.balance }.by(-20)
       end
+
+      # #Testing if the start station is nul once card is touched out
+      # let(:station) {double :station}
+      # it "should show nil in response to stat_station once card is touched out" do
+      #   subject.top_up(5)
+      #   subject.touchin(station)
+      #   subject.touchout
+      #   expect {subject.start_station}.to eq nil
+      # end
+
   end
 
-  
   #Testing the in_journey? method
   describe "#in_journey?" do
     it "should return false" do
