@@ -35,7 +35,7 @@ class Oystercard
   end
 
   def in_journey?
-    if @start_station = nil 
+    if @start_station == nil 
       return false
     else true    
     end
