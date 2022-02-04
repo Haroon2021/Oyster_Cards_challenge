@@ -54,3 +54,8 @@ Step 12
 
 Create card
 [ {start -> abc, end -> xyz}, ...      ]
+
+Step 13
+Make a station class
+Store the zone of a station
+create a Station and return station.zone and station.name 
