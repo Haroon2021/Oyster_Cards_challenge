@@ -1,3 +1,6 @@
+require_relative './journey.rb'
+require_relative './station.rb'
+
 class Oystercard
 
   attr_reader :balance, :entry_station, :list_of_journeys
@@ -44,9 +47,6 @@ class Oystercard
   # def start_station
   #   @entry_station
   # end
-
-
-
 
   private
 
