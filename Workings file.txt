@@ -49,3 +49,8 @@ Create an Oyster Card instance
 Add some balance
 Deduct some balance
 Confirm deduction has been removed from the balace
+
+Step 12
+
+Create card
+[ {start -> abc, end -> xyz}, ...      ]

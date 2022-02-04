@@ -1,7 +1,9 @@
 require_relative "../lib/oystercard.rb"
 
 describe Oystercard do
-  
+  #Having a double here allows us to use it within this describe block (in this case we can use it in the whole code as this des block is for the whole code)
+  let(:entry_station) {double :entry_station}
+  let(:exit_station) {double :exit_station}
   # tests if an oyster card responds to balance
   describe '#balance' do
     it 'should respond to balance' do
@@ -42,7 +44,7 @@ describe Oystercard do
       end
       
       #it should make the card remember the entry station
-      let(:station) {double :station}
+      
       it "it should make the card remember the entry station" do
         subject.top_up(5)
         subject.touchin(station)
@@ -55,21 +57,30 @@ describe Oystercard do
 
   #Testing the touchout method
   describe "#touchout" do
-      it {is_expected.to respond_to(:touchout).with(0).argument}
+      it {is_expected.to respond_to(:touchout).with(1).argument}
 
       #Testing if we create a oystercard then we touch out and it says that the card is on a journey
       it "should update in_journey to true after touching out" do
         subject.top_up(1)
         subject.touchin(station)
-        subject.touchout
+        subject.touchout(station)
         expect(subject.in_journey?).to eq false
       end
+
+      it "should save the journey" do
+        let (:journey) {double :{start_station,:en}}
+        subject.top_up(5)
+        subject.touchin(station)
+        subject.touchout(station)
+        expect(subject.list_of_journeys).to include journey
+      end
+
       #Testing if fare is deducted
-      let(:station) {double :station}
+
       it "should have an oyster card that touches out and reduces the balance by the min balance which is assumed to be the fare" do
         subject.top_up(78)
         subject.touchin(station)
-        expect {subject.touchout}.to change {subject.balance}.by(-1)
+        expect {subject.touchout(station)}.to change {subject.balance}.by(-1)
       end
 
       # #Testing if the start station is nul once card is touched out
@@ -86,7 +97,7 @@ describe Oystercard do
   #Testing the in_journey? method
   describe "#in_journey?" do
     it "should return false" do
-    subject.touchout
+    subject.touchout(station)
       expect(subject.start_station).to eq nil 
     end
   end
